@@ -36,9 +36,22 @@ func (l *LanguageModel) Score(s sentence) float64 {
 	return sum
 }
 
+func (l *LanguageModel) ScoreUNK(s sentence) float64 {
+	return l.Score(l.replaceUNK(s))
+}
+
+func (l *LanguageModel) replaceUNK(s sentence) sentence {
+	for i := 0; i < len(s); i++ {
+		if _, ok := (*l)[s[i]]; !ok {
+			s[i] = "<UNK>"
+		}
+	}
+	return s
+}
+
 func (l *LanguageModel) ScoreString(s string) float64 {
 	ss := append(append([]string{"<s>"}, strings.Split(s, " ")...), "</s>")
-	return l.Score(ss)
+	return l.ScoreUNK(ss)
 }
 
 func (l *LanguageModel) probNgram(ngram []string) float64 {
