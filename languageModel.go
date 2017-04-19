@@ -1,9 +1,6 @@
 package lm
 
-import (
-	"fmt"
-	"strings"
-)
+import "strings"
 
 var NGRAM = 0
 
@@ -58,7 +55,6 @@ func (l *LanguageModel) probNgram(ngram []string) float64 {
 	s := strings.TrimSpace(strings.Join(ngram, " "))
 	w, ok := (*l)[s]
 	if ok {
-		fmt.Println("prob: ", w.prob, " for string ", ngram)
 		return w.prob
 	}
 	firstPart := ngram[:len(ngram)-1]
